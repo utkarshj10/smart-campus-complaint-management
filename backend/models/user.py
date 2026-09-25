@@ -7,3 +7,8 @@ class UserCreate(BaseModel):
     password: str
     student_id: str | None = None
     academic_department: str | None = None
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
