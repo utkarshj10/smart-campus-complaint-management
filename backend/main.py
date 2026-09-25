@@ -1,12 +1,13 @@
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Depends
 from database import db
 from routes.auth import router as auth_router
-from auth_utils import verify_token
+from routes.complaints import router as complaints_router
+from auth_utils import verify_token, get_current_user
 
 app = FastAPI(title="Smart Campus Complaint Management System")
 
-
 app.include_router(auth_router)
+app.include_router(complaints_router)
 
 
 @app.get("/")
@@ -21,21 +22,9 @@ def database_test():
 
 
 @app.get("/protected")
-def protected_route(
-    authorization: str | None = Header(default=None, alias="Authorization")
-):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid authorization header"
-        )
-
-    token = authorization.split(" ")[1]
-
-    payload = verify_token(token)
-
+def protected_route(current_user=Depends(get_current_user)):
     return {
         "message": "You are authenticated",
-        "user_id": payload["user_id"],
-        "role": payload["role"]
+        "user_id": current_user["user_id"],
+        "role": current_user["role"]
     }
