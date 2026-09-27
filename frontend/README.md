@@ -1,36 +1,192 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Smart Campus Complaint Management System
 
-## Getting Started
+A full-stack web application designed to simplify the process of reporting, categorizing, and managing campus complaints. Students can submit complaints through a dedicated dashboard, while administrators can review complaints, identify the responsible department, and update their status.
 
-First, run the development server:
+The system uses an AI-powered classification workflow to automatically determine the **category** and **priority** of each complaint, reducing manual classification and helping route issues efficiently.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Project Summary
+
+The Smart Campus Complaint Management System provides a centralized platform for handling common campus issues such as network problems, electrical faults, cleanliness, infrastructure, security, and other student concerns.
+
+When a complaint is submitted, its description is processed using the Groq API. The AI determines the appropriate complaint category and priority, after which the backend maps the category to the responsible campus department. The complaint is then stored in MongoDB and made available to both the student and administrator through their respective dashboards.
+
+## Tech Stack
+
+### Frontend
+
+- Next.js
+- React
+- JavaScript
+- Tailwind CSS
+
+### Backend
+
+- Python
+- FastAPI
+- Pydantic
+- JWT Authentication
+- bcrypt
+
+### Database
+
+- MongoDB
+- MongoDB Atlas
+
+### AI
+
+- Groq API
+- `openai/gpt-oss-20b`
+
+## Features
+
+### Student Portal
+
+- Student registration and login
+- Secure JWT-based authentication
+- Submit campus complaints
+- Automatic AI-based category detection
+- Automatic priority detection
+- View assigned category and priority
+- Track complaint status
+- View complaint history
+- Modern responsive dashboard
+
+### Admin Portal
+
+- Secure administrator authentication
+- View all submitted complaints
+- View student details
+- View complaint category and priority
+- View responsible department
+- Update complaint status
+- Dashboard statistics
+- Centralized complaint management
+
+## Complaint Categories
+
+The system supports the following categories:
+
+| Category            | Department             |
+| ------------------- | ---------------------- |
+| IT / Network        | IT Department          |
+| Electrical          | Maintenance            |
+| Plumbing            | Maintenance            |
+| Cleanliness         | Housekeeping           |
+| Classroom Equipment | Maintenance            |
+| Infrastructure      | Maintenance            |
+| Security            | Security Department    |
+| Canteen             | Canteen Administration |
+| Other               | General Administration |
+
+## Complaint Priority
+
+Each complaint is automatically assigned one of three priority levels:
+
+- **High**
+- **Medium**
+- **Low**
+
+## Complaint Status
+
+Administrators can manage complaints using three status levels:
+
+- **Pending**
+- **In Progress**
+- **Resolved**
+
+## Application Workflow
+
+```text
+Student
+   │
+   ▼
+Login / Registration
+   │
+   ▼
+Submit Complaint
+   │
+   ▼
+Groq AI Classification
+   │
+   ├── Category
+   └── Priority
+   │
+   ▼
+Department Mapping
+   │
+   ▼
+MongoDB
+   │
+   ▼
+Admin Dashboard
+   │
+   ▼
+Status Update
+   │
+   ▼
+Student Dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+System Architecture
+┌─────────────────────┐
+│ Student / Admin │
+└──────────┬──────────┘
+│
+▼
+┌─────────────────────┐
+│ Next.js Frontend │
+└──────────┬──────────┘
+│ REST API
+▼
+┌─────────────────────┐
+│ FastAPI Backend │
+├─────────────────────┤
+│ Authentication │
+│ Complaint Processing │
+│ Department Mapping │
+└──────┬─────────┬────┘
+│ │
+▼ ▼
+┌──────────┐ ┌──────────────┐
+│ MongoDB │ │ Groq API │
+│ │ │ AI Classifier│
+└──────────┘ └──────────────┘
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Project Structure
+smart-campus-complaint/
+│
+├── backend/
+│ ├── models/
+│ │ ├── user.py
+│ │ └── complaint.py
+│ │
+│ ├── routes/
+│ │ ├── auth.py
+│ │ └── complaints.py
+│ │
+│ ├── services/
+│ │ └── complaint_processing.py
+│ │
+│ ├── auth_utils.py
+│ ├── database.py
+│ ├── main.py
+│ └── requirements.txt
+│
+├── frontend/
+│ ├── app/
+│ │ ├── admin/
+│ │ ├── dashboard/
+│ │ ├── register/
+│ │ ├── globals.css
+│ │ ├── layout.js
+│ │ └── page.js
+│ │
+│ ├── components/
+│ ├── lib/
+│ └── package.json
+│
+├── .gitignore
+└── README.md
+Project Scope
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is developed as an academic mini-project demonstrating how AI can be integrated into a practical campus management system to automate complaint classification and prioritization while providing separate workflows for students and administrators.
