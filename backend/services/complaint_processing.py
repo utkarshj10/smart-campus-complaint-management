@@ -41,10 +41,24 @@ Security
 Canteen
 Other
 
-Choose exactly one priority:
-High
-Medium
-Low
+Choose exactly one priority using these rules:
+
+High = immediate safety risk, serious security threat, fire, gas leak,
+exposed live wiring, electric shock, major flooding, structural danger,
+or another situation that could immediately cause injury or serious harm.
+
+Medium = important issue that needs attention soon but does not present
+an immediate danger. Examples include multiple lights/fans not working,
+major equipment failure, significant plumbing problems, or major network
+outage affecting classes/labs.
+
+Low = minor issue with little or no immediate safety risk. Examples include
+a single light/fan not working, minor cleanliness problems, small leaks,
+broken furniture, or cosmetic damage.
+
+Do not assign High merely because the issue is inconvenient or affects
+a class. High priority must involve immediate danger, serious security
+risk, or major disruption.
 
 Return only JSON in this format:
 {{
@@ -65,4 +79,3 @@ Return only JSON in this format:
     )
 
     return json.loads(response.choices[0].message.content)
-
