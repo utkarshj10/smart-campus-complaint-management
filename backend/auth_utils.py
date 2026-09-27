@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from jose import jwt
-from fastapi import Header, HTTPException, Depends
+from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 load_dotenv()

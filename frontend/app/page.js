@@ -39,7 +39,7 @@ export default function Home() {
         return;
       }
 
-      localStorage.setItem("access_token", data.access_token);
+      sessionStorage.setItem("access_token", data.access_token);
 
       const payload = JSON.parse(
         atob(data.access_token.split(".")[1])

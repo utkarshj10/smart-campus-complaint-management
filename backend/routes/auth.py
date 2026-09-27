@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException
 from models.user import UserCreate, UserLogin
 import os
 from dotenv import load_dotenv
-from fastapi import APIRouter
 import bcrypt
 from jose import jwt
 

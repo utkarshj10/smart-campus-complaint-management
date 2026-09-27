@@ -10,7 +10,7 @@ export default function Navbar({ title }) {
   const isAdmin = pathname?.startsWith("/admin");
 
   const logout = () => {
-    localStorage.removeItem("access_token");
+    sessionStorage.removeItem("access_token");
     router.push("/");
   };
 

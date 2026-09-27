@@ -5,7 +5,7 @@ export function getToken() {
     return null;
   }
 
-  return localStorage.getItem("access_token");
+  return sessionStorage.getItem("access_token");
 }
 
 export async function apiFetch(endpoint, options = {}) {
@@ -23,6 +23,17 @@ export async function apiFetch(endpoint, options = {}) {
   const data = await response.json();
 
   if (!response.ok) {
+    if (response.status === 401) {
+      sessionStorage.removeItem("access_token");
+
+      if (typeof window !== "undefined") {
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+        window.location.href = "/";
+      }
+
+      throw new Error("Session expired. Please log in again.");
+    }
+
     throw new Error(data.detail || data.message || "Something went wrong");
   }
 
