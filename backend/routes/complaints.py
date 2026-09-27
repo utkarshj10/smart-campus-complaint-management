@@ -81,20 +81,29 @@ def get_all_complaints(
 
     complaints = db.complaints.find()
 
+    complaint_list = []
+
+    for complaint in complaints:
+        student = db.users.find_one(
+            {"_id": ObjectId(complaint["user_id"])}
+        )
+
+        complaint_list.append({
+            "complaint_id": str(complaint["_id"]),
+            "user_id": complaint["user_id"],
+            "student_name": student["name"] if student else "Unknown",
+            "student_id": student["student_id"] if student else "Unknown",
+            "student_email": student["email"] if student else "Unknown",
+            "description": complaint["description"],
+            "venue": complaint["venue"],
+            "category": complaint["category"],
+            "priority": complaint["priority"],
+            "department": complaint["department"],
+            "status": complaint["status"]
+        })
+
     return {
-        "complaints": [
-            {
-                "complaint_id": str(complaint["_id"]),
-                "user_id": complaint["user_id"],
-                "description": complaint["description"],
-                "venue": complaint["venue"],
-                "category": complaint["category"],
-                "priority": complaint["priority"],
-                "department": complaint["department"],
-                "status": complaint["status"]
-            }
-            for complaint in complaints
-        ]
+        "complaints": complaint_list
     }
 
 
