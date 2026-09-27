@@ -1,4 +1,5 @@
 from database import db
+from fastapi import APIRouter, HTTPException
 from models.user import UserCreate, UserLogin
 import os
 from dotenv import load_dotenv
@@ -53,7 +54,10 @@ def login_user(user: UserLogin):
     existing_user = db.users.find_one({"email": user.email})
 
     if not existing_user:
-        return {"message": "Invalid email or password"}
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
 
     password_valid = bcrypt.checkpw(
         user.password.encode("utf-8"),
@@ -61,7 +65,10 @@ def login_user(user: UserLogin):
     )
 
     if not password_valid:
-        return {"message": "Invalid email or password"}
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
 
     token_data = {
         "user_id": str(existing_user["_id"]),
