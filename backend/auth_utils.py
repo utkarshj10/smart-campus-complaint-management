@@ -2,12 +2,14 @@ import os
 
 from dotenv import load_dotenv
 from jose import jwt
-from fastapi import Header, HTTPException
+from fastapi import Header, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
+security = HTTPBearer()
 
 
 def verify_token(token: str):
@@ -21,15 +23,9 @@ def verify_token(token: str):
 
 
 def get_current_user(
-        authorization: str | None = Header(default=None, alias="Authorization")
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid authorization header"
-        )
-
-    token = authorization.split(" ")[1]
+    token = credentials.credentials
 
     payload = verify_token(token)
 
